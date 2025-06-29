@@ -700,6 +700,18 @@ function showRecipeDetail(recipeId) {
                     </div>
                 </div>
             </div>
+            <div class="info-card download-card">
+                <div class="info-icon">
+                    <i class="fas fa-download"></i>
+                </div>
+                <div class="info-text">
+                    <h4>Download</h4>
+                    <button class="download-recipe-btn" onclick="downloadCurrentRecipe()">
+                        <i class="fas fa-download"></i>
+                        Recipe
+                    </button>
+                </div>
+            </div>
         </div>
         
         <div class="recipe-sections">
@@ -784,18 +796,12 @@ function showRecipeDetail(recipeId) {
         </div>
     `;
     
-    // Update modal header to include download button
+    // Update modal header to remove download button
     const modalHeader = document.querySelector('.modal-header');
     modalHeader.innerHTML = `
-        <div class="modal-header-actions">
-            <button class="download-recipe-btn" onclick="downloadCurrentRecipe()">
-                <i class="fas fa-download"></i>
-                Download Recipe
-            </button>
-            <button class="modal-close" id="modalClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
+        <button class="modal-close" id="modalClose">
+            <i class="fas fa-times"></i>
+        </button>
     `;
     
     // Re-attach modal close event listener
