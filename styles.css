@@ -522,8 +522,15 @@ body {
     padding: 0.75rem 1rem;
     border-bottom: 1px solid #e5e7eb;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     z-index: 10;
+}
+
+.modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .modal-close {
@@ -540,6 +547,30 @@ body {
 .modal-close:hover {
     background: #f3f4f6;
     color: #111827;
+}
+
+.download-recipe-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.download-recipe-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.download-recipe-btn i {
+    font-size: 0.875rem;
 }
 
 .modal-body {
@@ -987,6 +1018,21 @@ body {
     
     .recipe-sections {
         grid-template-columns: 1fr;
+    }
+    
+    .modal-header {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+    
+    .modal-header-actions {
+        justify-content: space-between;
+    }
+    
+    .download-recipe-btn {
+        flex: 1;
+        justify-content: center;
     }
 }
 

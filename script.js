@@ -405,9 +405,9 @@ function renderRecipes() {
                 <img src="${recipe.image}" alt="${recipe.name}" loading="lazy">
                 <div class="recipe-tag">${recipe.tags[0]}</div>
                 <div class="recipe-actions">
-                    <button class="action-btn ${!isPremium ? 'disabled' : ''}" 
+                    <button class="action-btn" 
                             onclick="handleDownload(event, ${recipe.id})"
-                            title="${!isPremium ? 'Upgrade to Premium to download' : 'Download recipe'}">
+                            title="Download recipe">
                         <i class="fas fa-download"></i>
                     </button>
                 </div>
@@ -592,6 +592,57 @@ function handleServingChange(change) {
     updateIngredientQuantities();
 }
 
+// Generate and download recipe PDF
+function generateRecipePDF(recipe) {
+    // Create a simple text-based recipe format for download
+    const servingRatio = currentServings / recipe.servings;
+    const macros = calculateMacroPercentages(recipe.nutrients, servingRatio);
+    
+    let recipeText = `${recipe.name}\n`;
+    recipeText += `${'='.repeat(recipe.name.length)}\n\n`;
+    
+    recipeText += `Description: ${recipe.description}\n\n`;
+    
+    recipeText += `Prep Time: ${recipe.prepTime} minutes\n`;
+    recipeText += `Cook Time: ${recipe.cookTime} minutes\n`;
+    recipeText += `Servings: ${currentServings}\n\n`;
+    
+    recipeText += `INGREDIENTS:\n`;
+    recipeText += `${'-'.repeat(12)}\n`;
+    recipe.ingredients.forEach(ingredient => {
+        const formattedQuantity = formatQuantity(ingredient.quantity, servingRatio);
+        const unit = ingredient.unit ? ` ${ingredient.unit}` : '';
+        recipeText += `• ${formattedQuantity}${unit} ${ingredient.name}\n`;
+    });
+    
+    recipeText += `\nINSTRUCTIONS:\n`;
+    recipeText += `${'-'.repeat(13)}\n`;
+    recipe.instructions.forEach((instruction, index) => {
+        recipeText += `${index + 1}. ${instruction}\n`;
+    });
+    
+    recipeText += `\nNUTRITION (per serving):\n`;
+    recipeText += `${'-'.repeat(22)}\n`;
+    recipeText += `Calories: ${Math.round(recipe.nutrients.calories * servingRatio)}\n`;
+    recipeText += `Protein: ${macros.protein.grams}g (${macros.protein.percentage}%)\n`;
+    recipeText += `Carbohydrates: ${macros.carbs.grams}g (${macros.carbs.percentage}%)\n`;
+    recipeText += `Fat: ${macros.fat.grams}g (${macros.fat.percentage}%)\n\n`;
+    
+    recipeText += `Tags: ${recipe.tags.join(', ')}\n\n`;
+    recipeText += `Downloaded from FoodSense on ${new Date().toLocaleDateString()}\n`;
+    
+    // Create and download the file
+    const blob = new Blob([recipeText], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${recipe.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_recipe.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+
 // Show recipe detail modal
 function showRecipeDetail(recipeId) {
     const recipe = recipes.find(r => r.id === recipeId);
@@ -733,8 +784,32 @@ function showRecipeDetail(recipeId) {
         </div>
     `;
     
+    // Update modal header to include download button
+    const modalHeader = document.querySelector('.modal-header');
+    modalHeader.innerHTML = `
+        <div class="modal-header-actions">
+            <button class="download-recipe-btn" onclick="downloadCurrentRecipe()">
+                <i class="fas fa-download"></i>
+                Download Recipe
+            </button>
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    // Re-attach modal close event listener
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    
     recipeModal.classList.add('active');
     document.body.style.overflow = 'hidden';
+}
+
+// Download current recipe from modal
+function downloadCurrentRecipe() {
+    if (currentRecipe) {
+        generateRecipePDF(currentRecipe);
+    }
 }
 
 // Close modal
@@ -745,18 +820,16 @@ function closeModal() {
     currentServings = 4;
 }
 
-// Handle download
+// Handle download from recipe cards
 function handleDownload(e, recipeId) {
     e.stopPropagation();
-    if (!isPremium) {
-        alert('Please upgrade to Premium to download recipes');
-        return;
-    }
     
     const recipe = recipes.find(r => r.id === recipeId);
     if (recipe) {
-        // In a real app, this would generate and download a PDF
-        alert(`Downloading recipe: ${recipe.name}`);
+        // Set current recipe and servings for download
+        currentRecipe = recipe;
+        currentServings = recipe.servings;
+        generateRecipePDF(recipe);
     }
 }
 
