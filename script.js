@@ -6,10 +6,18 @@ const recipes = [
         description: "A delicious and nutritious breakfast option featuring creamy avocado and perfectly poached eggs.",
         image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80",
         tags: ["Breakfast", "Healthy", "Vegetarian"],
-        ingredients: ["2 medium avocados", "2 large eggs", "2 slices sourdough bread", "1/2 tsp salt", "1/4 tsp pepper", "1/4 tsp red pepper flakes"],
+        ingredients: [
+            { name: "avocados", quantity: 2, unit: "medium" },
+            { name: "eggs", quantity: 2, unit: "large" },
+            { name: "sourdough bread", quantity: 2, unit: "slices" },
+            { name: "salt", quantity: 0.5, unit: "tsp" },
+            { name: "pepper", quantity: 0.25, unit: "tsp" },
+            { name: "red pepper flakes", quantity: 0.25, unit: "tsp" }
+        ],
         nutrients: { calories: 320, protein: 15, carbs: 28, fat: 18 },
         prepTime: 10,
         cookTime: 5,
+        servings: 2,
         instructions: [
             "Toast the bread until golden and crisp",
             "Mash the avocado and spread on toast",
@@ -24,10 +32,19 @@ const recipes = [
         description: "A protein-packed quinoa bowl with fresh vegetables and feta cheese inspired by Mediterranean flavors.",
         image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80",
         tags: ["Lunch", "Vegetarian", "Mediterranean"],
-        ingredients: ["1 cup quinoa", "1 large cucumber", "2 cups cherry tomatoes", "1/2 red onion", "4 oz feta cheese", "3 tbsp olive oil", "2 tbsp lemon juice"],
+        ingredients: [
+            { name: "quinoa", quantity: 1, unit: "cup" },
+            { name: "cucumber", quantity: 1, unit: "large" },
+            { name: "cherry tomatoes", quantity: 2, unit: "cups" },
+            { name: "red onion", quantity: 0.5, unit: "" },
+            { name: "feta cheese", quantity: 4, unit: "oz" },
+            { name: "olive oil", quantity: 3, unit: "tbsp" },
+            { name: "lemon juice", quantity: 2, unit: "tbsp" }
+        ],
         nutrients: { calories: 380, protein: 12, carbs: 45, fat: 16 },
         prepTime: 15,
         cookTime: 20,
+        servings: 4,
         instructions: [
             "Cook quinoa according to package instructions",
             "Chop vegetables into bite-sized pieces",
@@ -42,10 +59,19 @@ const recipes = [
         description: "A classic Indian dish featuring tender chicken in a creamy, spiced tomato sauce.",
         image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
         tags: ["Dinner", "Indian", "Spicy"],
-        ingredients: ["1 lb chicken breast", "1 cup yogurt", "2 tsp garam masala", "2 cups tomato sauce", "1/2 cup cream", "3 cloves garlic", "1 inch ginger"],
+        ingredients: [
+            { name: "chicken breast", quantity: 1, unit: "lb" },
+            { name: "yogurt", quantity: 1, unit: "cup" },
+            { name: "garam masala", quantity: 2, unit: "tsp" },
+            { name: "tomato sauce", quantity: 2, unit: "cups" },
+            { name: "cream", quantity: 0.5, unit: "cup" },
+            { name: "garlic", quantity: 3, unit: "cloves" },
+            { name: "ginger", quantity: 1, unit: "inch" }
+        ],
         nutrients: { calories: 450, protein: 35, carbs: 15, fat: 25 },
         prepTime: 30,
         cookTime: 40,
+        servings: 4,
         instructions: [
             "Marinate chicken in yogurt and spices for at least 30 minutes",
             "Grill or bake chicken until cooked through",
@@ -60,10 +86,18 @@ const recipes = [
         description: "A refreshing and nutritious smoothie bowl topped with fresh fruits and granola.",
         image: "https://images.unsplash.com/photo-1494597564530-871f2b93ac55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2013&q=80",
         tags: ["Breakfast", "Vegan", "Healthy"],
-        ingredients: ["2 cups mixed berries", "1 large banana", "1/2 cup almond milk", "1/4 cup granola", "1 tbsp chia seeds", "2 tbsp honey"],
+        ingredients: [
+            { name: "mixed berries", quantity: 2, unit: "cups" },
+            { name: "banana", quantity: 1, unit: "large" },
+            { name: "almond milk", quantity: 0.5, unit: "cup" },
+            { name: "granola", quantity: 0.25, unit: "cup" },
+            { name: "chia seeds", quantity: 1, unit: "tbsp" },
+            { name: "honey", quantity: 2, unit: "tbsp" }
+        ],
         nutrients: { calories: 280, protein: 8, carbs: 52, fat: 5 },
         prepTime: 10,
         cookTime: 0,
+        servings: 2,
         instructions: [
             "Blend berries, banana, and almond milk until smooth",
             "Pour into a bowl",
@@ -77,10 +111,19 @@ const recipes = [
         description: "Flaky salmon fillet with colorful roasted vegetables and fresh herbs.",
         image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
         tags: ["Dinner", "Seafood", "Healthy"],
-        ingredients: ["4 salmon fillets", "2 bell peppers", "2 zucchini", "1 red onion", "3 tbsp olive oil", "1 lemon", "2 tbsp fresh dill"],
+        ingredients: [
+            { name: "salmon fillets", quantity: 4, unit: "" },
+            { name: "bell peppers", quantity: 2, unit: "" },
+            { name: "zucchini", quantity: 2, unit: "" },
+            { name: "red onion", quantity: 1, unit: "" },
+            { name: "olive oil", quantity: 3, unit: "tbsp" },
+            { name: "lemon", quantity: 1, unit: "" },
+            { name: "fresh dill", quantity: 2, unit: "tbsp" }
+        ],
         nutrients: { calories: 420, protein: 32, carbs: 18, fat: 24 },
         prepTime: 15,
         cookTime: 25,
+        servings: 4,
         instructions: [
             "Preheat oven to 400°F (200°C)",
             "Arrange vegetables on a baking sheet and drizzle with olive oil",
@@ -95,10 +138,19 @@ const recipes = [
         description: "A quick and colorful vegetable stir fry with a savory sauce, perfect for weeknight dinners.",
         image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
         tags: ["Dinner", "Vegan", "Asian"],
-        ingredients: ["2 cups broccoli", "2 carrots", "1 bell pepper", "1 cup snap peas", "3 cloves garlic", "3 tbsp soy sauce", "1 inch ginger"],
+        ingredients: [
+            { name: "broccoli", quantity: 2, unit: "cups" },
+            { name: "carrot", quantity: 2, unit: "" },
+            { name: "bell pepper", quantity: 1, unit: "" },
+            { name: "snap peas", quantity: 1, unit: "cup" },
+            { name: "garlic", quantity: 3, unit: "cloves" },
+            { name: "soy sauce", quantity: 3, unit: "tbsp" },
+            { name: "ginger", quantity: 1, unit: "inch" }
+        ],
         nutrients: { calories: 220, protein: 8, carbs: 35, fat: 5 },
         prepTime: 15,
         cookTime: 10,
+        servings: 4,
         instructions: [
             "Chop all vegetables into bite-sized pieces",
             "Heat oil in a wok or large skillet",
@@ -113,10 +165,20 @@ const recipes = [
         description: "A juicy homemade beef burger with all the traditional toppings on a toasted bun.",
         image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1899&q=80",
         tags: ["Lunch", "American", "Beef"],
-        ingredients: ["1 lb ground beef", "4 burger buns", "4 lettuce leaves", "2 tomatoes", "1 onion", "4 cheese slices", "ketchup", "mustard"],
+        ingredients: [
+            { name: "ground beef", quantity: 1, unit: "lb" },
+            { name: "burger buns", quantity: 4, unit: "" },
+            { name: "lettuce leaves", quantity: 4, unit: "" },
+            { name: "tomatoes", quantity: 2, unit: "" },
+            { name: "onion", quantity: 1, unit: "" },
+            { name: "cheese slices", quantity: 4, unit: "" },
+            { name: "ketchup", quantity: 2, unit: "tbsp" },
+            { name: "mustard", quantity: 2, unit: "tbsp" }
+        ],
         nutrients: { calories: 580, protein: 30, carbs: 40, fat: 32 },
         prepTime: 15,
         cookTime: 10,
+        servings: 4,
         instructions: [
             "Form ground beef into patties",
             "Season with salt and pepper",
@@ -131,10 +193,18 @@ const recipes = [
         description: "A creamy, chocolatey smoothie that tastes like dessert but is packed with nutrients.",
         image: "https://images.unsplash.com/photo-1577805947697-89e18249d767?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1898&q=80",
         tags: ["Breakfast", "Vegetarian", "Sweet"],
-        ingredients: ["2 bananas", "2 tbsp cocoa powder", "1 cup almond milk", "1/2 cup Greek yogurt", "2 tbsp honey", "1 cup ice"],
+        ingredients: [
+            { name: "bananas", quantity: 2, unit: "" },
+            { name: "cocoa powder", quantity: 2, unit: "tbsp" },
+            { name: "almond milk", quantity: 1, unit: "cup" },
+            { name: "Greek yogurt", quantity: 0.5, unit: "cup" },
+            { name: "honey", quantity: 2, unit: "tbsp" },
+            { name: "ice", quantity: 1, unit: "cup" }
+        ],
         nutrients: { calories: 250, protein: 12, carbs: 42, fat: 4 },
         prepTime: 5,
         cookTime: 0,
+        servings: 2,
         instructions: [
             "Combine all ingredients in a blender",
             "Blend until smooth and creamy",
@@ -147,10 +217,19 @@ const recipes = [
         description: "A simple Italian salad with fresh tomatoes, mozzarella, and basil, drizzled with balsamic glaze.",
         image: "https://images.unsplash.com/photo-1608897013039-887f21d8c804?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1972&q=80",
         tags: ["Appetizer", "Italian", "Vegetarian"],
-        ingredients: ["4 tomatoes", "8 oz fresh mozzarella", "1/4 cup fresh basil", "3 tbsp olive oil", "2 tbsp balsamic glaze", "salt", "pepper"],
+        ingredients: [
+            { name: "tomatoes", quantity: 4, unit: "" },
+            { name: "fresh mozzarella", quantity: 8, unit: "oz" },
+            { name: "fresh basil", quantity: 0.25, unit: "cup" },
+            { name: "olive oil", quantity: 3, unit: "tbsp" },
+            { name: "balsamic glaze", quantity: 2, unit: "tbsp" },
+            { name: "salt", quantity: 0.5, unit: "tsp" },
+            { name: "pepper", quantity: 0.25, unit: "tsp" }
+        ],
         nutrients: { calories: 280, protein: 14, carbs: 10, fat: 20 },
         prepTime: 10,
         cookTime: 0,
+        servings: 4,
         instructions: [
             "Slice tomatoes and mozzarella into rounds",
             "Arrange tomato and mozzarella slices on a plate, alternating",
@@ -165,10 +244,20 @@ const recipes = [
         description: "A creamy Italian rice dish with sautéed mushrooms, white wine, and Parmesan cheese.",
         image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
         tags: ["Dinner", "Italian", "Vegetarian"],
-        ingredients: ["1.5 cups arborio rice", "1 lb mushrooms", "1 onion", "3 cloves garlic", "1/2 cup white wine", "4 cups vegetable broth", "1/2 cup Parmesan cheese", "2 tbsp butter"],
+        ingredients: [
+            { name: "arborio rice", quantity: 1.5, unit: "cups" },
+            { name: "mushrooms", quantity: 1, unit: "lb" },
+            { name: "onion", quantity: 1, unit: "" },
+            { name: "garlic", quantity: 3, unit: "cloves" },
+            { name: "white wine", quantity: 0.5, unit: "cup" },
+            { name: "vegetable broth", quantity: 4, unit: "cups" },
+            { name: "Parmesan cheese", quantity: 0.5, unit: "cup" },
+            { name: "butter", quantity: 2, unit: "tbsp" }
+        ],
         nutrients: { calories: 420, protein: 10, carbs: 58, fat: 15 },
         prepTime: 15,
         cookTime: 30,
+        servings: 4,
         instructions: [
             "Sauté onion and garlic until soft",
             "Add mushrooms and cook until browned",
@@ -185,6 +274,8 @@ let filteredRecipes = [...recipes];
 let selectedTags = [];
 let searchTerm = '';
 let isPremium = false;
+let currentServings = 4; // Default servings
+let currentRecipe = null;
 
 // DOM elements
 const searchInput = document.getElementById('searchInput');
@@ -326,7 +417,7 @@ function renderRecipes() {
                     <i class="fas fa-clock"></i>
                     <span>${recipe.prepTime}m</span>
                     <span>•</span>
-                    <i class="fas fa-chef-hat"></i>
+                    <i class="fas fa-fire"></i>
                     <span>${recipe.cookTime}m</span>
                 </div>
                 <h3 class="recipe-title">${recipe.name}</h3>
@@ -361,10 +452,89 @@ function handleRecipeClick(e) {
     }
 }
 
+// Format quantity for display
+function formatQuantity(quantity, servingRatio) {
+    const adjustedQuantity = quantity * servingRatio;
+    
+    // Handle fractions
+    if (adjustedQuantity < 1) {
+        if (adjustedQuantity <= 0.125) return '1/8';
+        if (adjustedQuantity <= 0.25) return '1/4';
+        if (adjustedQuantity <= 0.33) return '1/3';
+        if (adjustedQuantity <= 0.5) return '1/2';
+        if (adjustedQuantity <= 0.67) return '2/3';
+        if (adjustedQuantity <= 0.75) return '3/4';
+        return Math.round(adjustedQuantity * 10) / 10;
+    }
+    
+    // Handle whole numbers and decimals
+    const rounded = Math.round(adjustedQuantity * 4) / 4; // Round to nearest quarter
+    const whole = Math.floor(rounded);
+    const fraction = rounded - whole;
+    
+    if (fraction === 0) {
+        return whole.toString();
+    } else {
+        let fractionStr = '';
+        if (fraction === 0.25) fractionStr = '1/4';
+        else if (fraction === 0.5) fractionStr = '1/2';
+        else if (fraction === 0.75) fractionStr = '3/4';
+        else fractionStr = fraction.toString();
+        
+        return whole > 0 ? `${whole} ${fractionStr}` : fractionStr;
+    }
+}
+
+// Update ingredient quantities based on servings
+function updateIngredientQuantities() {
+    if (!currentRecipe) return;
+    
+    const servingRatio = currentServings / currentRecipe.servings;
+    const ingredientsList = document.querySelector('.ingredients-list');
+    
+    if (ingredientsList) {
+        const ingredientItems = ingredientsList.querySelectorAll('li');
+        ingredientItems.forEach((item, index) => {
+            const ingredient = currentRecipe.ingredients[index];
+            if (ingredient) {
+                const label = item.querySelector('label');
+                const formattedQuantity = formatQuantity(ingredient.quantity, servingRatio);
+                const unit = ingredient.unit ? ` ${ingredient.unit}` : '';
+                label.innerHTML = `<strong>${formattedQuantity}${unit}</strong> ${ingredient.name}`;
+            }
+        });
+    }
+    
+    // Update nutrition info
+    const caloriesElement = document.querySelector('.calories-value');
+    if (caloriesElement) {
+        const adjustedCalories = Math.round(currentRecipe.nutrients.calories * servingRatio);
+        caloriesElement.textContent = adjustedCalories;
+    }
+}
+
+// Handle serving counter changes
+function handleServingChange(change) {
+    const newServings = Math.max(1, currentServings + change);
+    currentServings = newServings;
+    
+    // Update the display
+    const servingDisplay = document.getElementById('servingCount');
+    if (servingDisplay) {
+        servingDisplay.textContent = currentServings;
+    }
+    
+    // Update ingredient quantities
+    updateIngredientQuantities();
+}
+
 // Show recipe detail modal
 function showRecipeDetail(recipeId) {
     const recipe = recipes.find(r => r.id === recipeId);
     if (!recipe) return;
+    
+    currentRecipe = recipe;
+    currentServings = recipe.servings; // Reset to default servings
     
     modalBody.innerHTML = `
         <div class="recipe-detail-hero">
@@ -395,13 +565,21 @@ function showRecipeDetail(recipeId) {
                     <p>${recipe.cookTime} min</p>
                 </div>
             </div>
-            <div class="info-card">
+            <div class="info-card serving-card">
                 <div class="info-icon">
                     <i class="fas fa-utensils"></i>
                 </div>
                 <div class="info-text">
                     <h4>Servings</h4>
-                    <p>4 people</p>
+                    <div class="serving-controls">
+                        <button class="serving-btn" onclick="handleServingChange(-1)" ${currentServings <= 1 ? 'disabled' : ''}>
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span class="serving-count" id="servingCount">${currentServings}</span>
+                        <button class="serving-btn" onclick="handleServingChange(1)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="info-card">
@@ -410,7 +588,7 @@ function showRecipeDetail(recipeId) {
                 </div>
                 <div class="info-text">
                     <h4>Calories</h4>
-                    <p>${recipe.nutrients.calories}</p>
+                    <p><span class="calories-value">${Math.round(recipe.nutrients.calories * (currentServings / recipe.servings))}</span> per serving</p>
                 </div>
             </div>
         </div>
@@ -419,12 +597,17 @@ function showRecipeDetail(recipeId) {
             <div class="recipe-section-card">
                 <h3>Ingredients</h3>
                 <ul class="ingredients-list">
-                    ${recipe.ingredients.map(ingredient => `
-                        <li>
-                            <input type="checkbox" id="ingredient-${recipe.ingredients.indexOf(ingredient)}">
-                            <label for="ingredient-${recipe.ingredients.indexOf(ingredient)}">${ingredient}</label>
-                        </li>
-                    `).join('')}
+                    ${recipe.ingredients.map((ingredient, index) => {
+                        const servingRatio = currentServings / recipe.servings;
+                        const formattedQuantity = formatQuantity(ingredient.quantity, servingRatio);
+                        const unit = ingredient.unit ? ` ${ingredient.unit}` : '';
+                        return `
+                            <li>
+                                <input type="checkbox" id="ingredient-${index}">
+                                <label for="ingredient-${index}"><strong>${formattedQuantity}${unit}</strong> ${ingredient.name}</label>
+                            </li>
+                        `;
+                    }).join('')}
                 </ul>
             </div>
             
@@ -450,6 +633,8 @@ function showRecipeDetail(recipeId) {
 function closeModal() {
     recipeModal.classList.remove('active');
     document.body.style.overflow = '';
+    currentRecipe = null;
+    currentServings = 4;
 }
 
 // Handle download

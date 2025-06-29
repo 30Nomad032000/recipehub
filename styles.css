@@ -605,6 +605,10 @@ body {
     gap: 0.75rem;
 }
 
+.serving-card {
+    justify-content: space-between;
+}
+
 .info-icon {
     background: white;
     border-radius: 50%;
@@ -624,6 +628,45 @@ body {
 .info-text p {
     font-weight: 600;
     color: #111827;
+}
+
+.serving-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.serving-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    transition: all 0.2s;
+    font-size: 0.75rem;
+}
+
+.serving-btn:hover:not(:disabled) {
+    background: #f3f4f6;
+    color: #111827;
+    border-color: #9ca3af;
+}
+
+.serving-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.serving-count {
+    font-weight: 600;
+    color: #111827;
+    min-width: 1.5rem;
+    text-align: center;
 }
 
 .recipe-sections {
@@ -665,6 +708,11 @@ body {
     height: 1rem;
     border-radius: 0.25rem;
     border: 1px solid #d1d5db;
+}
+
+.ingredients-list input[type="checkbox"]:checked + label {
+    text-decoration: line-through;
+    opacity: 0.6;
 }
 
 .instructions-list {
@@ -810,6 +858,19 @@ body {
     
     .recipe-detail-info {
         grid-template-columns: 1fr;
+    }
+    
+    .serving-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .serving-card .info-text {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 }
 
