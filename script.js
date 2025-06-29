@@ -485,7 +485,33 @@ function formatQuantity(quantity, servingRatio) {
     }
 }
 
-// Update ingredient quantities based on servings
+// Calculate macro percentages
+function calculateMacroPercentages(nutrients, servingRatio) {
+    const adjustedNutrients = {
+        protein: Math.round(nutrients.protein * servingRatio),
+        carbs: Math.round(nutrients.carbs * servingRatio),
+        fat: Math.round(nutrients.fat * servingRatio)
+    };
+    
+    const totalMacros = adjustedNutrients.protein + adjustedNutrients.carbs + adjustedNutrients.fat;
+    
+    return {
+        protein: {
+            grams: adjustedNutrients.protein,
+            percentage: totalMacros > 0 ? Math.round((adjustedNutrients.protein / totalMacros) * 100) : 0
+        },
+        carbs: {
+            grams: adjustedNutrients.carbs,
+            percentage: totalMacros > 0 ? Math.round((adjustedNutrients.carbs / totalMacros) * 100) : 0
+        },
+        fat: {
+            grams: adjustedNutrients.fat,
+            percentage: totalMacros > 0 ? Math.round((adjustedNutrients.fat / totalMacros) * 100) : 0
+        }
+    };
+}
+
+// Update ingredient quantities and nutrition based on servings
 function updateIngredientQuantities() {
     if (!currentRecipe) return;
     
@@ -506,10 +532,42 @@ function updateIngredientQuantities() {
     }
     
     // Update nutrition info
+    updateNutritionInfo(servingRatio);
+}
+
+// Update nutrition information display
+function updateNutritionInfo(servingRatio) {
+    if (!currentRecipe) return;
+    
+    const adjustedCalories = Math.round(currentRecipe.nutrients.calories * servingRatio);
+    const macros = calculateMacroPercentages(currentRecipe.nutrients, servingRatio);
+    
+    // Update calories
     const caloriesElement = document.querySelector('.calories-value');
     if (caloriesElement) {
-        const adjustedCalories = Math.round(currentRecipe.nutrients.calories * servingRatio);
         caloriesElement.textContent = adjustedCalories;
+    }
+    
+    // Update macro values and progress bars
+    const proteinValue = document.querySelector('.protein-value');
+    const proteinBar = document.querySelector('.protein-fill');
+    if (proteinValue && proteinBar) {
+        proteinValue.textContent = `${macros.protein.grams}g (${macros.protein.percentage}%)`;
+        proteinBar.style.width = `${macros.protein.percentage}%`;
+    }
+    
+    const carbsValue = document.querySelector('.carbs-value');
+    const carbsBar = document.querySelector('.carbs-fill');
+    if (carbsValue && carbsBar) {
+        carbsValue.textContent = `${macros.carbs.grams}g (${macros.carbs.percentage}%)`;
+        carbsBar.style.width = `${macros.carbs.percentage}%`;
+    }
+    
+    const fatValue = document.querySelector('.fat-value');
+    const fatBar = document.querySelector('.fat-fill');
+    if (fatValue && fatBar) {
+        fatValue.textContent = `${macros.fat.grams}g (${macros.fat.percentage}%)`;
+        fatBar.style.width = `${macros.fat.percentage}%`;
     }
 }
 
@@ -524,7 +582,13 @@ function handleServingChange(change) {
         servingDisplay.textContent = currentServings;
     }
     
-    // Update ingredient quantities
+    // Update serving buttons
+    const minusBtn = document.querySelector('.serving-btn[onclick*="-1"]');
+    if (minusBtn) {
+        minusBtn.disabled = currentServings <= 1;
+    }
+    
+    // Update ingredient quantities and nutrition
     updateIngredientQuantities();
 }
 
@@ -535,6 +599,9 @@ function showRecipeDetail(recipeId) {
     
     currentRecipe = recipe;
     currentServings = recipe.servings; // Reset to default servings
+    
+    const servingRatio = currentServings / recipe.servings;
+    const macros = calculateMacroPercentages(recipe.nutrients, servingRatio);
     
     modalBody.innerHTML = `
         <div class="recipe-detail-hero">
@@ -582,15 +649,6 @@ function showRecipeDetail(recipeId) {
                     </div>
                 </div>
             </div>
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="fas fa-fire-flame-curved"></i>
-                </div>
-                <div class="info-text">
-                    <h4>Calories</h4>
-                    <p><span class="calories-value">${Math.round(recipe.nutrients.calories * (currentServings / recipe.servings))}</span> per serving</p>
-                </div>
-            </div>
         </div>
         
         <div class="recipe-sections">
@@ -598,7 +656,6 @@ function showRecipeDetail(recipeId) {
                 <h3>Ingredients</h3>
                 <ul class="ingredients-list">
                     ${recipe.ingredients.map((ingredient, index) => {
-                        const servingRatio = currentServings / recipe.servings;
                         const formattedQuantity = formatQuantity(ingredient.quantity, servingRatio);
                         const unit = ingredient.unit ? ` ${ingredient.unit}` : '';
                         return `
@@ -621,6 +678,57 @@ function showRecipeDetail(recipeId) {
                         </li>
                     `).join('')}
                 </ol>
+            </div>
+            
+            <div class="recipe-section-card">
+                <h3>Nutrition</h3>
+                <div class="nutrition-info">
+                    <div class="calories-section">
+                        <div class="calories-header">
+                            <h4>Calories</h4>
+                            <span class="calories-value">${Math.round(recipe.nutrients.calories * servingRatio)}</span>
+                        </div>
+                        <div class="calories-bar">
+                            <div class="calories-fill"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="macros-section">
+                        <div class="macro-item">
+                            <div class="macro-header">
+                                <h4>Protein</h4>
+                                <span class="macro-value protein-value">${macros.protein.grams}g (${macros.protein.percentage}%)</span>
+                            </div>
+                            <div class="macro-bar">
+                                <div class="macro-fill protein-fill" style="width: ${macros.protein.percentage}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="macro-item">
+                            <div class="macro-header">
+                                <h4>Carbohydrates</h4>
+                                <span class="macro-value carbs-value">${macros.carbs.grams}g (${macros.carbs.percentage}%)</span>
+                            </div>
+                            <div class="macro-bar">
+                                <div class="macro-fill carbs-fill" style="width: ${macros.carbs.percentage}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="macro-item">
+                            <div class="macro-header">
+                                <h4>Fat</h4>
+                                <span class="macro-value fat-value">${macros.fat.grams}g (${macros.fat.percentage}%)</span>
+                            </div>
+                            <div class="macro-bar">
+                                <div class="macro-fill fat-fill" style="width: ${macros.fat.percentage}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="nutrition-disclaimer">
+                        * Nutritional information is an estimate and will vary depending on ingredient choices and preparation.
+                    </p>
+                </div>
             </div>
         </div>
     `;
