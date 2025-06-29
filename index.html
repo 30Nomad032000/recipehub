@@ -1,25 +1,146 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:title" content="FoodSense" />
-    <meta property="og:description" content="Discover your next favorite dish with FoodSense: Intelligent search, dynamic filters, and intuitive design for every culinary explorer." />
-    <meta property="og:image" content="/og.png" type="image/png" />
-    <meta property="og:url" content="https://foodsense.app" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="FoodSense" />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:site" content="@foodsense" />
-    <meta property="twitter:title" content="FoodSense" />
-    <meta property="twitter:description" content="Discover your next favorite dish with FoodSense: Intelligent search, dynamic filters, and intuitive design for every culinary explorer." />
-    <meta property="twitter:image" content="/og.png" type="image/png" />
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" type="image/png" />
-    <title>FoodSense</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodSense - Recipe Discovery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="logo">FoodSense</h1>
+                </div>
+                <div class="search-container">
+                    <div class="search-bar">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search recipes..." id="searchInput">
+                    </div>
+                </div>
+                <nav class="header-nav">
+                    <a href="#" class="nav-link">Upgrade</a>
+                    <a href="#" class="btn btn-primary">Sign In</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="content-wrapper">
+                <!-- Sidebar -->
+                <aside class="sidebar" id="sidebar">
+                    <div class="sidebar-header">
+                        <h2>Filters</h2>
+                        <div class="sidebar-actions">
+                            <button class="btn-reset" id="resetFilters">
+                                <i class="fas fa-filter-circle-xmark"></i>
+                                Reset
+                            </button>
+                            <button class="mobile-close-btn" id="mobileCloseBtn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-content">
+                        <!-- Tags Filter -->
+                        <div class="filter-section">
+                            <div class="filter-header">
+                                <i class="fas fa-tag"></i>
+                                <h3>Tags</h3>
+                            </div>
+                            <div class="tag-filters" id="tagFilters">
+                                <button class="tag-btn" data-tag="Breakfast">Breakfast</button>
+                                <button class="tag-btn" data-tag="Lunch">Lunch</button>
+                                <button class="tag-btn" data-tag="Dinner">Dinner</button>
+                                <button class="tag-btn" data-tag="Vegetarian">Vegetarian</button>
+                                <button class="tag-btn" data-tag="Vegan">Vegan</button>
+                                <button class="tag-btn" data-tag="Healthy">Healthy</button>
+                                <button class="tag-btn" data-tag="Italian">Italian</button>
+                                <button class="tag-btn" data-tag="Asian">Asian</button>
+                                <button class="tag-btn" data-tag="Indian">Indian</button>
+                                <button class="tag-btn" data-tag="Mediterranean">Mediterranean</button>
+                            </div>
+                        </div>
+
+                        <!-- Nutrition Filter -->
+                        <div class="filter-section">
+                            <div class="filter-header">
+                                <i class="fas fa-dumbbell"></i>
+                                <h3>Nutrition</h3>
+                            </div>
+                            <div class="nutrition-filters">
+                                <div class="nutrition-item">
+                                    <label>Calories: <span id="caloriesValue">220 - 580</span></label>
+                                    <input type="range" id="caloriesRange" min="220" max="580" value="580" class="range-slider">
+                                </div>
+                                <div class="nutrition-item">
+                                    <label>Protein: <span id="proteinValue">8 - 35g</span></label>
+                                    <input type="range" id="proteinRange" min="8" max="35" value="35" class="range-slider">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Recipe Grid -->
+                <section class="recipe-section">
+                    <div class="results-info">
+                        <p id="resultsCount">10 recipes found</p>
+                    </div>
+                    
+                    <div class="recipe-grid" id="recipeGrid">
+                        <!-- Recipe cards will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Premium Limit Message -->
+                    <div class="premium-message" id="premiumMessage" style="display: none;">
+                        <p><strong>Free plan limitation:</strong> Only showing 5 recipes. Upgrade to Premium to see all recipes and enable downloads.</p>
+                        <button class="btn btn-warning">Upgrade to Premium</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Recipe Detail Modal -->
+    <div class="modal-overlay" id="recipeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Recipe details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 FoodSense. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
 </html>
