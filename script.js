@@ -594,53 +594,270 @@ function handleServingChange(change) {
 
 // Generate and download recipe PDF
 function generateRecipePDF(recipe) {
-    // Create a simple text-based recipe format for download
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
     const servingRatio = currentServings / recipe.servings;
     const macros = calculateMacroPercentages(recipe.nutrients, servingRatio);
     
-    let recipeText = `${recipe.name}\n`;
-    recipeText += `${'='.repeat(recipe.name.length)}\n\n`;
+    // Colors
+    const primaryColor = [59, 130, 246]; // Blue
+    const secondaryColor = [107, 114, 128]; // Gray
+    const accentColor = [16, 185, 129]; // Green
+    const textColor = [17, 24, 39]; // Dark gray
     
-    recipeText += `Description: ${recipe.description}\n\n`;
+    let yPosition = 20;
     
-    recipeText += `Prep Time: ${recipe.prepTime} minutes\n`;
-    recipeText += `Cook Time: ${recipe.cookTime} minutes\n`;
-    recipeText += `Servings: ${currentServings}\n\n`;
+    // Header with brand
+    doc.setFillColor(...primaryColor);
+    doc.rect(0, 0, 210, 25, 'F');
     
-    recipeText += `INGREDIENTS:\n`;
-    recipeText += `${'-'.repeat(12)}\n`;
-    recipe.ingredients.forEach(ingredient => {
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.text('FoodSense', 15, 16);
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Recipe Collection', 150, 16);
+    
+    yPosition = 40;
+    
+    // Recipe title
+    doc.setTextColor(...textColor);
+    doc.setFontSize(24);
+    doc.setFont('helvetica', 'bold');
+    const titleLines = doc.splitTextToSize(recipe.name, 180);
+    doc.text(titleLines, 15, yPosition);
+    yPosition += titleLines.length * 8 + 5;
+    
+    // Description
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...secondaryColor);
+    const descLines = doc.splitTextToSize(recipe.description, 180);
+    doc.text(descLines, 15, yPosition);
+    yPosition += descLines.length * 5 + 10;
+    
+    // Recipe info boxes
+    const boxWidth = 40;
+    const boxHeight = 20;
+    const boxSpacing = 45;
+    
+    // Prep time box
+    doc.setFillColor(249, 250, 251);
+    doc.rect(15, yPosition, boxWidth, boxHeight, 'F');
+    doc.setDrawColor(229, 231, 235);
+    doc.rect(15, yPosition, boxWidth, boxHeight);
+    
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.text('PREP TIME', 17, yPosition + 6);
+    doc.setTextColor(...textColor);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${recipe.prepTime}m`, 17, yPosition + 14);
+    
+    // Cook time box
+    doc.setFillColor(249, 250, 251);
+    doc.rect(15 + boxSpacing, yPosition, boxWidth, boxHeight, 'F');
+    doc.setDrawColor(229, 231, 235);
+    doc.rect(15 + boxSpacing, yPosition, boxWidth, boxHeight);
+    
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.text('COOK TIME', 17 + boxSpacing, yPosition + 6);
+    doc.setTextColor(...textColor);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${recipe.cookTime}m`, 17 + boxSpacing, yPosition + 14);
+    
+    // Servings box
+    doc.setFillColor(249, 250, 251);
+    doc.rect(15 + boxSpacing * 2, yPosition, boxWidth, boxHeight, 'F');
+    doc.setDrawColor(229, 231, 235);
+    doc.rect(15 + boxSpacing * 2, yPosition, boxWidth, boxHeight);
+    
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.text('SERVINGS', 17 + boxSpacing * 2, yPosition + 6);
+    doc.setTextColor(...textColor);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${currentServings}`, 17 + boxSpacing * 2, yPosition + 14);
+    
+    // Calories box
+    doc.setFillColor(249, 250, 251);
+    doc.rect(15 + boxSpacing * 3, yPosition, boxWidth, boxHeight, 'F');
+    doc.setDrawColor(229, 231, 235);
+    doc.rect(15 + boxSpacing * 3, yPosition, boxWidth, boxHeight);
+    
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.text('CALORIES', 17 + boxSpacing * 3, yPosition + 6);
+    doc.setTextColor(...textColor);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${Math.round(recipe.nutrients.calories * servingRatio)}`, 17 + boxSpacing * 3, yPosition + 14);
+    
+    yPosition += 35;
+    
+    // Tags
+    if (recipe.tags && recipe.tags.length > 0) {
+        doc.setTextColor(...secondaryColor);
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Tags: ${recipe.tags.join(' • ')}`, 15, yPosition);
+        yPosition += 15;
+    }
+    
+    // Ingredients section
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Ingredients', 15, yPosition);
+    yPosition += 10;
+    
+    doc.setTextColor(...textColor);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    
+    recipe.ingredients.forEach((ingredient, index) => {
         const formattedQuantity = formatQuantity(ingredient.quantity, servingRatio);
         const unit = ingredient.unit ? ` ${ingredient.unit}` : '';
-        recipeText += `• ${formattedQuantity}${unit} ${ingredient.name}\n`;
+        const ingredientText = `• ${formattedQuantity}${unit} ${ingredient.name}`;
+        
+        doc.text(ingredientText, 20, yPosition);
+        yPosition += 6;
+        
+        // Check if we need a new page
+        if (yPosition > 250) {
+            doc.addPage();
+            yPosition = 20;
+        }
     });
     
-    recipeText += `\nINSTRUCTIONS:\n`;
-    recipeText += `${'-'.repeat(13)}\n`;
+    yPosition += 10;
+    
+    // Instructions section
+    if (yPosition > 200) {
+        doc.addPage();
+        yPosition = 20;
+    }
+    
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Instructions', 15, yPosition);
+    yPosition += 10;
+    
+    doc.setTextColor(...textColor);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    
     recipe.instructions.forEach((instruction, index) => {
-        recipeText += `${index + 1}. ${instruction}\n`;
+        // Step number circle
+        doc.setFillColor(...primaryColor);
+        doc.circle(18, yPosition - 2, 3, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`${index + 1}`, 16.5, yPosition + 1);
+        
+        // Instruction text
+        doc.setTextColor(...textColor);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        const instructionLines = doc.splitTextToSize(instruction, 165);
+        doc.text(instructionLines, 25, yPosition);
+        yPosition += instructionLines.length * 5 + 8;
+        
+        // Check if we need a new page
+        if (yPosition > 250) {
+            doc.addPage();
+            yPosition = 20;
+        }
     });
     
-    recipeText += `\nNUTRITION (per serving):\n`;
-    recipeText += `${'-'.repeat(22)}\n`;
-    recipeText += `Calories: ${Math.round(recipe.nutrients.calories * servingRatio)}\n`;
-    recipeText += `Protein: ${macros.protein.grams}g (${macros.protein.percentage}%)\n`;
-    recipeText += `Carbohydrates: ${macros.carbs.grams}g (${macros.carbs.percentage}%)\n`;
-    recipeText += `Fat: ${macros.fat.grams}g (${macros.fat.percentage}%)\n\n`;
+    yPosition += 10;
     
-    recipeText += `Tags: ${recipe.tags.join(', ')}\n\n`;
-    recipeText += `Downloaded from FoodSense on ${new Date().toLocaleDateString()}\n`;
+    // Nutrition section
+    if (yPosition > 180) {
+        doc.addPage();
+        yPosition = 20;
+    }
     
-    // Create and download the file
-    const blob = new Blob([recipeText], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${recipe.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_recipe.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Nutrition (per serving)', 15, yPosition);
+    yPosition += 15;
+    
+    // Nutrition bars
+    const barWidth = 60;
+    const barHeight = 8;
+    
+    // Protein bar
+    doc.setTextColor(...textColor);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Protein: ${macros.protein.grams}g (${macros.protein.percentage}%)`, 15, yPosition);
+    
+    doc.setFillColor(229, 231, 235);
+    doc.rect(15, yPosition + 3, barWidth, barHeight, 'F');
+    doc.setFillColor(...accentColor);
+    doc.rect(15, yPosition + 3, (barWidth * macros.protein.percentage) / 100, barHeight, 'F');
+    yPosition += 18;
+    
+    // Carbs bar
+    doc.setTextColor(...textColor);
+    doc.text(`Carbohydrates: ${macros.carbs.grams}g (${macros.carbs.percentage}%)`, 15, yPosition);
+    
+    doc.setFillColor(229, 231, 235);
+    doc.rect(15, yPosition + 3, barWidth, barHeight, 'F');
+    doc.setFillColor(251, 146, 60);
+    doc.rect(15, yPosition + 3, (barWidth * macros.carbs.percentage) / 100, barHeight, 'F');
+    yPosition += 18;
+    
+    // Fat bar
+    doc.setTextColor(...textColor);
+    doc.text(`Fat: ${macros.fat.grams}g (${macros.fat.percentage}%)`, 15, yPosition);
+    
+    doc.setFillColor(229, 231, 235);
+    doc.rect(15, yPosition + 3, barWidth, barHeight, 'F');
+    doc.setFillColor(239, 68, 68);
+    doc.rect(15, yPosition + 3, (barWidth * macros.fat.percentage) / 100, barHeight, 'F');
+    yPosition += 25;
+    
+    // Disclaimer
+    doc.setTextColor(...secondaryColor);
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'italic');
+    const disclaimerText = '* Nutritional information is an estimate and will vary depending on ingredient choices and preparation.';
+    const disclaimerLines = doc.splitTextToSize(disclaimerText, 180);
+    doc.text(disclaimerLines, 15, yPosition);
+    
+    // Footer
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, 285, 210, 12, 'F');
+        
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Downloaded from FoodSense on ${new Date().toLocaleDateString()}`, 15, 292);
+        doc.text(`Page ${i} of ${pageCount}`, 180, 292);
+    }
+    
+    // Save the PDF
+    const fileName = `${recipe.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_recipe.pdf`;
+    doc.save(fileName);
 }
 
 // Show recipe detail modal
